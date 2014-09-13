@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui" 
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:composite="http://java.sun.com/jsf/composite"
+                >
+
+    <composite:interface />
+
+    <composite:implementation>
+        <h:form>
+            <p:panel styleClass="ui-widget-header">
+                <p:commandLink styleClass="breadcrumb-item" value="#{msgs['breadCrumb.home']}" action="#{breadCrumbBean.returnToHome}"/>
+                <ui:repeat value="#{breadCrumbBean.pathItems}" var="item" >
+                    <span class="ui-icon ui-icon-triangle-1-e breadcrumb-item-separator" /><h:outputText styleClass="breadcrumb-item" value="#{item}" />
+                </ui:repeat>
+            </p:panel>
+        </h:form>
+    </composite:implementation>
+
+</ui:composition>

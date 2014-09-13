@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <composite:interface>        
+        <composite:attribute name="widgetName" required="true" />
+        <composite:attribute name="message" required="false" default="" />        
+    </composite:interface>
+    <composite:implementation>
+        <p:dialog  id="#{cc.attrs.id}_panel"  resizable="false"  draggable="false" modal="true" closable="true"  
+                   header="Ostrzeżenie"   widgetVar="#{cc.attrs.widgetName}" >
+            <h:panelGrid rendered="#{cc.attrs.turnOnMessage}" style="margin-left: auto;margin-right: auto;max-width: 1100px; padding-left:  40px;padding-right:  40px; font-family: Segoe UI Semibold; font-size: 12pt; white-space: normal; text-align: center; "  >
+                <h:outputText value="#{cc.attrs.message}" style=""/>
+            </h:panelGrid>
+
+            <h:panelGrid style="margin-left: auto;margin-right: auto; font-size: 10pt;" columns="1"  >
+                <composite:insertChildren/>
+            </h:panelGrid>
+
+        </p:dialog>
+    </composite:implementation>
+</html>

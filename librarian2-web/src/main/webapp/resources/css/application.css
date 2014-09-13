@@ -1,0 +1,470 @@
+/* ---------------------------------------------------------------- */
+/* ---------------- CSS wykorzystywane w aplikacji ---------------- */
+/* ---------------------------------------------------------------- */
+
+/* Ustawienia layout'u */
+body {
+    //background-image: url(#{resource['images/background.jpg']});
+    background-image: url("/librarian2-web/resources/images/background.jpg");
+    margin: 0;
+    font-size: 100% !important;
+}
+
+.link {
+    text-decoration: none;
+    color: #fff;
+}
+
+.link:hover {
+    color: #55a616;
+}
+
+/*
+.ui-widget-content {
+        border: none;
+}
+
+.layout-style {
+    background: transparent;
+    border: none;
+        padding: 0;
+    color: #557A55;
+}
+.ui-layout-unit .ui-layout-unit-content {
+    border: 0 none;
+    padding: 0;
+        overflow: auto;
+    background: transparent;
+}
+*/
+/* Ustawienia dla wyświetlania menu*/
+.ui-layout-north {
+    z-index: 20 !important;
+    overflow: visible !important;;
+}
+.ui-layout-north .ui-layout-unit-content {
+    overflow: visible !important;
+}
+
+/* Styl nadrzędny dla każdego komponentu */
+.ui-widget .ui-widget {
+    font-size: 10pt;
+}
+.ui-widget-header, .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    text-shadow: none;
+}
+.ui-state-default {
+    -moz-box-shadow: none;
+}
+
+/*usuwa checkbox zaznaczajacy wszytkie w liscie rozwijanej przy dodawaniu szeregu czasowego*/
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox-box{
+    display: none;
+}
+/* Re-definicja globalna */
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    border: 0.1em solid !important;
+    color: #557A55 !important;
+}
+.ui-inputfield.ui-state-focus, .ui-widget-content .ui-inputfield.ui-state-focus, .ui-widget-header .ui-inputfield.ui-state-focus,
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover,
+.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+    box-shadow: none;
+}
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    border: 0.1em solid #DDDDDD;
+    color: #557A55;
+    font-weight: bold;
+    text-shadow: none;
+}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+    background: #FFFFFF;
+    color: #557A55;
+    font-weight: bold;
+}
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
+    text-decoration: none;
+    text-shadow: none;
+}
+.ui-helper-clearfix:before, .ui-helper-clearfix:after {
+    display: block;
+}
+
+/* Re-definicja stylu przycisku */
+.ui-button-text {
+    font-size: 10pt !important;
+}
+
+/* Klasa z marginesem przycisku */
+.button-margin {
+    margin-right: 0.3em;
+}
+
+/* Re-definicja stylu przycisku, który ma wyłącznie ikonę */
+/*button.ui-button-icon-only {
+    height: 2.4em;
+    width: 3.0em;
+}
+*/
+button.ui-datepicker-trigger{
+    height: 1.9em;
+    width: 2.6em;
+}
+
+/* Re-definicja stylu określającego wygląd panelu */
+.ui-panel .ui-panel-content {
+    font-size: 9pt;
+}
+.ui-widget-content .ui-panel {
+    border: 1px solid #DDDDDD;
+}
+
+/* Re-definicja stylu określającego wygląd belki tytułowej w panelach */
+.ui-panel .ui-panel-titlebar {
+    padding: 0.3em 0em 0.3em 0.5em;
+    position: relative;
+    font-size: 9pt;
+}
+.ui-panel .ui-panel-titlebar-icon, .ui-panel .ui-panel-titlebar-icon:hover, .ui-panel .ui-panel-titlebar-icon:focus {
+    margin: 0.2em;
+}
+
+/* Wyświetlanie chmurki */
+.ui-growl {
+    top: 4.5em;
+    width: 16em;
+}
+.ui-growl-message {
+    width: 12em;
+}
+.ui-growl-title {
+    font-size: 8pt;
+    font-style: normal;
+}
+.ui-growl-message p {
+    font-size: 8pt;
+    font-style: normal;
+}
+.ui-growl-item-container {
+    margin: 0 0 0.5em;
+    opacity: 0.85;
+    position: relative;
+    border: 0.1em solid #DDDDDD;
+    color: #557A55;
+}
+.ui-growl-image-info {
+    background-position: 0 -316px;
+}
+.ui-growl-image-warn {
+    background-position: 0 -450px;
+}
+.ui-growl-image-error {
+    background-position: 0 -52px;
+}
+
+/* Wyświetlanie wyboru daty w kalendarzu */
+.ui-datepicker {
+    width: 10.5em;
+    border: 0.1em solid #DDDDDD;
+}
+.ui-datepicker .ui-datepicker-header {
+    //background: url(#{resource['images/ui-bg_highlight-soft_50_1e4c3e_1x100.png']}) repeat-x scroll 50% 50% #1E4C3E;
+    background: url('/librarian2-web/resources/images/ui-bg_highlight-soft_50_1e4c3e_1x100.png') repeat-x scroll 50% 50% #1E4C3E;
+font-size: 0.65em !important;
+}
+.ui-datepicker th {
+    font-size: 0.7em;
+}
+.ui-datepicker .ui-datepicker-calendar .ui-state-default {
+    color: #557A55;
+    font-size: 0.7em;
+}
+.ui-datepicker .ui-datepicker-current-day .ui-state-highlight, .ui-datepicker .ui-datepicker-current-day .ui-state-default {
+    //background: url(#{resource['images/ui-bg_highlight-soft_50_1e4c3e_1x100.png']}) repeat-x scroll 50% 50% #1E4C3E;
+    background: url('/librarian2-web/resources/images/ui-bg_highlight-soft_50_1e4c3e_1x100.png') repeat-x scroll 50% 50% #1E4C3E;
+color: #FFFFFF !important;
+font-weight: bold;
+}
+.ui-datepicker .ui-datepicker-today {
+    border: 0.1em solid #DDDDDD;
+}
+
+/* Wyświetlanie selecOneMenu */
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+    font-size: 9pt;
+}
+.ui-selectonemenu .ui-selectonemenu-label {
+    font-weight: bold;
+    border: 0.1em solid #DDDDDD;
+    color: #557A55;
+}
+
+/* Zmiana sposobu wyświetlania okna modalnego (dialog) oraz okna potwierdzeń (confirmDialog)*/
+.ui-dialog .ui-dialog-titlebar {
+    font-size: 8pt;
+}
+.ui-dialog .ui-dialog-content {
+    border-style: initial;
+    font-size: 8pt;
+    padding-bottom: 10px !important;
+}
+.ui-dialog .ui-dialog-buttonpane {
+    border-width: 0.1em 0 0;
+    margin: 0;
+    padding: 0.2;
+}
+.ui-dialog .ui-dialog-buttonpane button {
+    font-size: 9pt;
+    margin: 0.2em;
+}
+.ui-icon-alert {
+    background-position: 0 -146px;
+}
+
+/* Re-definicja stylu tabeli */
+
+.ui-datatable table {
+    font-size: 10pt;
+}
+
+.ui-datatable .ui-datatable-data td, .ui-datatable .ui-datatable-data-empty td {
+    border: 0.1em solid #DDDDDD;
+}
+.ui-datatable .ui-state-active, .ui-datatable .ui-widget-content .ui-state-active, .ui-datatable
+.ui-widget-header .ui-state-active {
+    color: #FFFFFF !important;
+}
+.ui-datatable .ui-state-active .ui-icon, .ui-datatable .ui-state-hover .ui-icon {
+    //background-image: url(#{resource['images/ui-icons_ffffff_256x240.png']});
+    background-image: url('/librarian2-web/resources/images/ui-icons_ffffff_256x240.png');
+}
+.ui-datatable .ui-state-highlight, .ui-datatable .ui-widget-content .ui-state-highlight,
+.ui-datatable .ui-widget-header .ui-state-highlight {
+    color: #000000;
+    font-weight: normal;
+    background: #EEEEEE;
+    text-shadow: none;
+}
+.ui-datatable .ui-datatable-data-empty td {
+    border: 0.1em solid #DDDDDD;
+    font-size: 10pt;
+    text-align: center;
+    font-style: italic;
+}
+.ui-datatable .ui-paginator, .ui-datatable .ui-paginator {
+    border: 0.1em none #DDDDDD;
+    padding: 0.1em;
+}
+
+/* Re-definicja widoku zakładek (p:tabView) */
+.ui-tabs .ui-tabs-panel {
+    border-left: 0.1em solid #DDDDDD;
+    border-right: 0.1em solid #DDDDDD;
+    border-bottom: 0.1em solid #DDDDDD;
+}
+
+/* Redefinicja pozycji komponentów select* (oneMenu, manyMenu itp.) */
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
+    font-size: 9pt;
+}
+
+
+
+/* DODANE Z MAIN.CSS */
+.ui-menu-dynamic {
+    width: 200px;
+    white-space: nowrap;
+}
+
+
+.tilte {
+    font-family: Segoe UI Semibold;
+}
+
+.dateClass {
+    text-align	:	center;
+    display     :	block;
+}
+
+.alignTop {
+    vertical-align: top;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.right {
+    text-align: right !important;
+}
+
+.amountClass{
+    white-space: nowrap;
+    text-align: right;
+    display: block;
+}
+
+.timeField input {
+    width:40px;
+}
+
+.timeFieldInput {
+    width:35px;
+}
+
+.dateFieldInput input {
+    width:80px;
+}
+
+.centeredcontent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -10.5em;
+    margin-left: -11.5em;
+
+    width: 21em;
+    height: 9em;
+
+    color: #000;
+    background-color: white;
+    border: 0px;
+}
+
+.subtable table thead tr {
+    display: none;
+}
+
+.ui-icon-calendar {
+    //background-image: url(#{resource['images/ui-icons_1e4c3e_256x240.png']}) !important;
+    background-image: url('/librarian2-web/resources/images/ui-icons_1e4c3e_256x240.png') !important;
+background-position: -112px -112px;
+width: 16px;
+height: 16px;
+}
+
+.signStatusInfo{
+
+}
+
+.signStatusWarn{
+    color: red;
+}
+.signStatusError{
+    color: red;
+}
+
+.breadCrumbClass {
+    height: 16px;
+    padding: 2px 5px 7px 5px;
+}
+
+.ui-widget-header a {
+    cursor: default !important;
+    text-decoration: none;
+    font-size: 8pt;
+}
+.ui-menuitem-text{
+    font-size: 1em;
+    z-index: 20;
+}
+
+.ui-button-text{
+    padding-top: 0.0em !important;
+    padding-bottom: 0.1em !important;
+}
+.ui-menu{
+    background-image: url("/librarian2-web/javax.faces.resource/images/ui-bg_highlight-hard_80_c4c4c4_1x100.png.xhtml?ln=primefaces-aristo") !important;
+    z-index: 20;
+}
+
+.ui-menu-child {
+    width: 300px !important;
+    z-index: 20;
+}
+.ui-button{
+    margin-top: 1px !important;
+    margin-bottom: 1px !important;
+}
+.ui-menubar {
+    width: 100%!important;
+}
+.ui-inputfield{
+    font-size: 9pt;
+}
+
+.noBorder-ui-panelgrid td {
+    border-style: none !important;
+    padding: 4px 10px;
+}
+.rowHeaderCenterWrap {
+    text-align:center;
+    white-space: normal;
+}
+.ui-menu-child{
+    margin-top: -5px !important;
+}
+.ui-selectonemenu-list-item {
+    background: none !important;
+}
+
+.whiteHeader .ui-widget-header{
+    background: none repeat scroll 0 0 white;
+    border: none;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.breadcrumb div {
+    padding: 0em 0.5em !important;
+}
+
+.breadcrumb-item {
+    color: white;
+}
+
+.breadcrumb-item-separator {
+    margin: 0.1em 3px 0.2em 0 !important;
+    display: inline-block !important;
+    vertical-align: middle;
+}
+
+.emergencyOrderDetails {
+    width: 660px;
+}
+
+.emergencyPanelGrid tbody tr {
+    vertical-align: top;
+}
+.panelGridTop {
+    vertical-align: top;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #dddddd;
+}
+.table-row-red {
+    color: red;
+}
+
+/* Stylizacja timepickera w komponencie p:calendar */
+.ui_tpicker_time_label {
+    font-size: 14px !important;
+}
+.ui_tpicker_time {
+    font-size: 14px !important;
+}
+.ui_tpicker_hour_label {
+    font-size: 14px !important;
+}
+.ui_tpicker_minute_label {
+    font-size: 14px !important;
+}
+.ui-datepicker-buttonpane button {
+    font-size: 14px !important;
+    font-weight: normal !important;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-header-box {
+    padding-right: 0px !important;
+}

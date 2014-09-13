@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <title>Librarian</title>
+            <meta http-equiv="content-type" content="text/xhtml; charset=UTF-8" />
+            <h:outputStylesheet library="css" name="application.css"/>
+
+
+            <style type="text/css">
+                body {
+                    height: 100%;
+                    width: 100%;
+                    margin: 0px;
+                    padding: 0px;
+                }
+
+                #centeredcontent {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -10.5em;
+                    margin-left: -11.5em;
+
+                    width: 21em;
+                    height: 9em;
+
+                    color: #000;
+                    background-color: white;
+                    border: 0px;
+                }
+            </style>
+
+        </h:head>
+
+        <h:body>
+            <div id="centeredcontent">
+                <h:form id="loginForm">
+                    <p:panel header="Logowanie do aplikacji Librarian" style="width: 400px;">
+                        <p:panel id="panel">
+                            <p:focus context="panel"/>
+                            <p:messages id="messages"  showDetail="true"/>
+                            <p:panelGrid columns="2" style="width: 100%;">
+                                <h:outputLabel value="Użytkownik" />
+                                <p:inputText id="username" value="#{loginBean.username}" style="width: 200px;" label="Login"/>
+
+                                <h:outputLabel value="Hasło" />
+                                <p:password id="password" value="#{loginBean.password}" style="width: 200px;" label="Hasło" />
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <p:panel styleClass="buttonsPanel" >
+                            <p:commandButton value="Zaloguj" action="#{loginBean.login()}" process="@form" update="loginForm" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.system.scheduledTask'])}" />
+                            <p:commandButton value="Wyczyść" action="#{loginBean.reset()}" process="@form" update="loginForm" />
+                        </p:panel>
+                    </p:panel>
+                </h:form>
+            </div>
+
+        </h:body>
+    </f:view>
+
+</html>

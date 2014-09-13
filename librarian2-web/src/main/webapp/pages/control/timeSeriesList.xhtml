@@ -1,0 +1,427 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:ggcomp="http://java.sun.com/jsf/composite/ggcomp">
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['control.timeSeriesList.title']}"/>
+    </ui:define>
+
+    <ui:define name="body">
+
+        <ui:remove>
+            +----------------------+
+            | Kryteria filtrowania |
+            +----------------------+
+        </ui:remove>
+
+        <h:form id="searchForm">
+            <p:panelGrid id="grid" styleClass="gridWithoutBorder" >
+                <p:row>
+                    <p:column>
+                        <h:outputLabel value="#{msgs['control.timeSeriesList.form']}" />
+                    </p:column>
+
+                    <p:column>
+                        <p:selectOneMenu id="formType" value="#{timeSeriesListBean.criteriaFormType}">
+                            <f:selectItem itemLabel="#{msgs['commons.select']}" itemValue="#{null}" />
+                            <f:selectItems value="#{timeSeriesListBean.formTypeArray}"/>
+
+                            <p:ajax update="timeSeriesType"/>
+                            <p:ajax listener="#{timeSeriesListBean.findPosition(timeSeriesListBean.criteriaFormType)}" update="position"/>
+                        </p:selectOneMenu>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputLabel styleClass="nowrap" value="#{msgs['control.timeSeriesList.timeSeriesType']}" />
+                    </p:column>
+
+                    <p:column>
+                        <p:selectOneMenu id="timeSeriesType" value="#{timeSeriesListBean.criteriaTimeSeries}" disabled="#{timeSeriesListBean.criteriaTimeSeriesDisabled(timeSeriesListBean.criteriaFormType)}" >
+                            <f:selectItem itemLabel="#{msgs['commons.select']}" itemValue="" />
+                            <f:selectItems value="#{timeSeriesListBean.seriesTypeList}"
+                                           var="var"
+                                           itemValue="#{var}"
+                                           itemLabel="#{msgs['control.timeSeriesList.timeSeriesType.'.concat(var)]}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton value="#{msgs['button.search']}" id="search" update=":searchForm :form" action="#{timeSeriesListBean.find()}"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <h:outputLabel value="#{msgs['control.timeSeriesList.position']}" />
+
+                    </p:column>
+
+                    <p:column>
+                        <p:selectOneMenu id="position" value="#{timeSeriesListBean.criteriaPosition}" disabled="#{timeSeriesListBean.criteriaFormType == null}" >
+                            <f:selectItem itemLabel="#{msgs['commons.select']}" itemValue="#{null}" />
+
+                            <f:selectItems value="#{timeSeriesListBean.positions.entrySet()}" var="entry"
+
+                                           itemValue="#{entry.key}" itemLabel="#{entry.key}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputLabel styleClass="nowrap" value="#{msgs['control.timeSeriesList.date']}" />
+                    </p:column>
+
+                    <p:column>
+                        <p:calendar locale="pl" pattern="yyyy-MM-dd" showOn="button" value="#{timeSeriesListBean.criteriaDataDate}"/>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton value="#{msgs['button.clean']}" id="clean" action="#{timeSeriesListBean.defaultSC()}" update=":searchForm :form"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+        </h:form>
+
+        <ui:remove>
+            +------------------------+
+            | Nowy szereg - przycisk |
+            +------------------------+
+        </ui:remove>
+
+        <h:form>
+            <p:commandButton value="#{msgs['monitor.timeSeries.create']}"  oncomplete="newTimeSeriesWidget.show()"
+                             action="#{timeSeriesListBean.prepareNewReportInstance()}"    update=":createForm :createForm:newTimeSeriesForm"   />
+        </h:form>
+
+        <h:form id="form">
+
+            <ui:remove>
+                +----------------+
+                | Lista szeregów |
+                +----------------+
+            </ui:remove>
+
+            <p:dataTable  id="list"  value ="#{timeSeriesListBean.modelLazy}" paginator="true" lazy="true"  var="dataTableItem"
+                          rows="#{applicationBean.dataTableRows}"
+                          paginatorTemplate="#{applicationBean.dataTablePaginatorTemplate}"
+                          rowsPerPageTemplate="#{applicationBean.dataTableRowsPerTableTemplate}"
+                          currentPageReportTemplate="#{applicationBean.currentpageReportTemplate}"
+                          paginatorPosition="#{applicationBean.paginatorPosition}"
+                          emptyMessage="#{msgs['no.records']}"
+                          sortBy="#{dataTableItem.createTime}"
+                          sortOrder="DESCENDING">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="#{msgs['control.timeSeriesList.form']}" styleClass="center" sortBy="#{dataTableItem.formType}"/>
+                        <p:column headerText="#{msgs['control.timeSeriesList.timeSeriesType']}" styleClass="center" sortBy="#{dataTableItem.seriesType}"/>
+                        <p:column headerText="#{msgs['control.timeSeriesList.position']}" styleClass="center" sortBy="#{dataTableItem.position}"/>
+                        <p:column headerText="#{msgs['control.timeSeriesList.dataRange']}" styleClass="center" sortBy="#{dataTableItem.dateRange}"/>
+                        <p:column headerText="#{msgs['control.timeSeriesList.dateFrom']}" styleClass="center" sortBy="#{dataTableItem.dateBegin}"/>
+                        <p:column headerText="#{msgs['control.timeSeriesList.dateTo']}" styleClass="center" sortBy="#{dataTableItem.dateEnd}"/>
+                        <p:column headerText="#{msgs['control.timeSeriesList.institutions']}" styleClass="center"/>
+                        <p:column headerText="#{msgs['control.timeSeriesList.createDate']}" styleClass="center" sortBy="#{dataTableItem.createTime}"/>
+                        <p:column headerText="#{msgs['control.timeSeriesList.createdBy']}" styleClass="center" sortBy="#{dataTableItem.createUser}"/>
+                        <p:column headerText="#{msgs['control.timeSeriesList.actions']}" styleClass="center"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column  style=" text-align: left;">
+                    <h:outputText value="#{dataTableItem.formType}" />
+                </p:column>
+                <p:column  style=" text-align: left;">
+                    <h:outputText value="#{msgs['control.timeSeriesList.timeSeriesType.'.concat(dataTableItem.seriesType)]}" />
+                </p:column>
+                <p:column  style=" text-align: left;">
+                    <h:outputText value="#{dataTableItem.position}" />
+                </p:column>
+                <p:column style=" text-align: left;">
+                    <h:outputText value="#{msgs[dataTableItem.dateRange.msgKey]}" />
+                </p:column>
+                <p:column   style=" text-align: left;">
+                    <h:outputText value="#{timeSeriesListBean.convertDateToString(dataTableItem.dateBegin,dataTableItem.dateRange)}" />
+                </p:column>
+
+                <p:column  style="text-align: left;">
+                    <h:outputText value="#{timeSeriesListBean.convertDateToString(dataTableItem.dateEnd,dataTableItem.dateRange)}" />
+                </p:column>
+                <p:column  style="text-align: left;">
+                    <h:outputText value="#{timeSeriesListBean.allOrSelected(dataTableItem)}"/>
+                </p:column>
+                <p:column  style="text-align: left;">
+                    <h:outputText value="#{dataTableItem.createTime}">
+                        <f:convertDateTime pattern="#{applicationBean.dateTimeFormat}" />
+                    </h:outputText>
+                </p:column>
+                <p:column  style="text-align: left;">
+                    <h:outputText value="#{dataTableItem.createUser}"/>
+                </p:column>
+
+                <p:column style=" text-align: left;">
+                    <p:commandButton id="selectButton" update=":viewForm:display" title="Przeglądaj"
+                                     action="#{timeSeriesListBean.generateHtmlReport()}"
+                                     oncomplete="viewTimeSeriesDialog.show()" icon="ui-icon-search">
+                        <f:setPropertyActionListener value="#{dataTableItem}" target="#{timeSeriesListBean.selectedTimeSeries}" />
+                    </p:commandButton>
+                    <p:commandButton id="deleteButton" update=":viewForm:display" title="Usuń" icon="ui-icon-trash" onclick="timeSeriesDeleteConfirmDialog.show()" immediate="true">
+                        <f:setPropertyActionListener value="#{dataTableItem}" target="#{timeSeriesListBean.selectedTimeSeries}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <ui:remove>
+                +-----------------------------+
+                | Tworzenie szeregu czasowego |
+                +-----------------------------+
+            </ui:remove>
+            <p:dialog id="timeSeriesDeleteConfirm" widgetVar="timeSeriesDeleteConfirmDialog"
+                      header="#{msgs['control.timeSeriesList.deleteTimeSeries.title']}"
+                      modal="true"
+                      width="350" height="55">
+
+
+                #{msgs['control.timeSeriesList.deleteTimeSeries.confirm']}
+                <h:panelGrid style="margin-left: auto;margin-right: auto; " columns="2" cellpadding="10"  >
+                    <p:commandButton id="timeSeriesDeleteConfirmYes"  value="#{msgs['boolean.true']}" action="#{timeSeriesListBean.deleteTimeSeries()}" process="@this" update=":form"/>
+                    <p:commandButton id="timeSeriesDeleteConfirmNo"  value="#{msgs['boolean.false']}" onclick="timeSeriesDeleteConfirmDialog.hide()" immediate="false" process="@this"/>
+                </h:panelGrid>
+
+
+            </p:dialog>
+
+        </h:form>
+
+
+        <h:form id="createForm" prependId="false">
+            <ui:remove>
+                +-----------------------------+
+                | Tworzenie szeregu czasowego |
+                +-----------------------------+
+            </ui:remove>
+
+            <p:dialog id="newTimeSeriesForm" widgetVar="newTimeSeriesWidget"
+                      header="#{msgs['control.timeSeriesList.newTimeSeries.title']}"
+                      modal="true"
+                      width="520" height="600">
+                <p:panelGrid id="grid" styleClass="gridWithoutBorder" >
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="#{msgs['control.timeSeriesList.form']}" />
+                        </p:column>
+
+                        <p:column>
+                            <p:selectOneMenu id="newFormType" value="#{timeSeriesListBean.newReportInstanceDescriptionTO.formType}" >
+                                <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="true" />
+                                <f:selectItems value="#{timeSeriesListBean.formTypeArray}" var="option"
+                                               itemValue="#{option}" itemLabel="#{option}" />
+                                <p:ajax  listener="#{timeSeriesListBean.actionFormType()}"  event="change" update="institutionType institutionList
+                                         dateFrom dateTo basePeriodFrom basePeriodTo createTimeSeriesDialog newPostion newTimeSeriesType dataRange"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel styleClass="nowrap" value="#{msgs['control.timeSeriesList.timeSeriesType']}" />
+                        </p:column>
+
+                        <p:column>
+                            <p:selectOneMenu id="newTimeSeriesType" value="#{timeSeriesListBean.newReportInstanceDescriptionTO.seriesType}"
+                                             disabled="#{timeSeriesListBean.seriesTypeDisable}"  >
+
+                                <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="true" />
+                                <f:selectItems value="#{timeSeriesListBean.seriesTypeList}" var="seriesType" 
+                                               itemLabel="#{msgs[seriesType.msgKey]}" 
+                                               itemValue="#{seriesType}" />
+                                <p:ajax  listener="#{timeSeriesListBean.actionSeriesType()}"  event="change" update="institutionType basePeriodFrom basePeriodTo createTimeSeriesDialog institutionList newPostion"/>
+
+
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="#{msgs['control.timeSeriesList.position']}" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="newPostion" value="#{timeSeriesListBean.newReportInstanceDescriptionTO.position}"
+                                             disabled="#{timeSeriesListBean.positionDisable}" >
+                                <f:selectItem itemLabel="#{msgs['commons.select']}"  itemValue="#{null}" itemDisabled="true"   />
+                                <f:selectItems value="#{timeSeriesListBean.positionList}" var="entry" 
+                                               itemValue="#{entry}" itemLabel="#{entry}"/>
+                                <p:ajax  listener="#{timeSeriesListBean.actionPosition()}"  event="change" update="dataRange basePeriodTo basePeriodFrom institutionType createTimeSeriesDialog institutionList "/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="#{msgs['control.timeSeriesList.newTimeSeries.dataTimeSection']}" />
+                        </p:column>  
+
+
+                        <p:column>
+                            <p:selectOneMenu id="dataRange" value="#{timeSeriesListBean.newReportInstanceDescriptionTO.dateRange}" disabled="#{timeSeriesListBean.dateRangeDisable}" >
+                                <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="true" />
+                                <f:selectItems value="#{timeSeriesListBean.dateRanegeList}" var="dateRange" 
+                                               itemLabel="#{msgs[dateRange.msgKey]}" 
+                                               itemValue="#{dateRange}" />
+                                <f:selectItem itemLabel="#{msgs[timeSeriesListBean.dateRangeMonthly.msgKey]}" itemDisabled="true"
+                                              itemValue="#{timeSeriesListBean.dateRangeMonthly}" />
+
+                                <p:ajax  listener="#{timeSeriesListBean.actionDateRange()}"  event="change" update="dateFrom institutionList institutionType
+                                         dateTo basePeriodFrom createTimeSeriesDialog basePeriodTo"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel styleClass="nowrap" value="#{msgs['control.timeSeriesList.dateFrom']}" />
+                        </p:column>
+
+                        <p:column>
+                            <p:calendar locale="pl" id="dateFrom" maxdate="#{timeSeriesListBean.newReportInstanceDescriptionTO.dateEnd}"
+                                        value="#{timeSeriesListBean.newReportInstanceDescriptionTO.dateBegin}"
+                                        pattern="yyyy-MM-dd" showOn="button" disabled="#{timeSeriesListBean.datesDisable}">
+                                <p:ajax    event="dateSelect" update="dateTo institutionList  createTimeSeriesDialog institutionType"  listener="#{timeSeriesListBean.actionDateFrom()}" />
+                            </p:calendar>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel styleClass="nowrap" value="#{msgs['control.timeSeriesList.dateTo']}" />
+                        </p:column>
+
+                        <p:column>
+
+                            <p:calendar locale="pl"  id="dateTo" mindate="#{timeSeriesListBean.newReportInstanceDescriptionTO.dateBegin}"
+                                        maxdate="#{timeSeriesListBean.maxMonth}"
+                                        value="#{timeSeriesListBean.newReportInstanceDescriptionTO.dateEnd}"
+                                        pattern="yyyy-MM-dd" showOn="button" disabled="#{timeSeriesListBean.datesDisable}">
+                                <p:ajax    event="dateSelect" update="dateFrom institutionList createTimeSeriesDialog institutionType" listener="#{timeSeriesListBean.actionDateTo()}" />
+                            </p:calendar>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel styleClass="nowrap" value="#{msgs['control.timeSeriesList.dateMonthFrom']}" />
+                        </p:column>
+
+                        <p:column>
+                            <p:selectOneMenu id="basePeriodFrom" converter="entityConverter" value="#{timeSeriesListBean.selectedBasePeriodFrom}"  
+                                             disabled="#{timeSeriesListBean.basePeriodsDisable}" >
+                                <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="true" />
+                                <f:selectItems value="#{timeSeriesListBean.basePeriodListFrom}" var="monthVar" 
+                                               itemLabel="#{applicationBean.formatDate(monthVar.monthBaseOfReserve,applicationBean.monthDateFormat)}" 
+                                               itemValue="#{monthVar}" />
+                                <p:ajax event="change"  update="dateFrom dateTo basePeriodTo createTimeSeriesDialog institutionList institutionType
+                                        basePeriodFrom" listener="#{timeSeriesListBean.actionBasePeriodFrom()}"  /> 
+
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel styleClass="nowrap" value="#{msgs['control.timeSeriesList.dateMonthTo']}" />
+                        </p:column>
+
+                        <p:column>
+                            <p:selectOneMenu id="basePeriodTo" converter="entityConverter" value="#{timeSeriesListBean.selectedBasePeriodTo}"  
+                                             disabled="#{timeSeriesListBean.basePeriodsDisable}" >
+                                <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="true" />
+                                <f:selectItems value="#{timeSeriesListBean.basePeriodListTo}" var="monthVar" 
+                                               itemLabel="#{applicationBean.formatDate(monthVar.monthBaseOfReserve,applicationBean.monthDateFormat)}" 
+                                               itemValue="#{monthVar}" />
+                                <p:ajax event="change"  update="dateFrom createTimeSeriesDialog dateTo basePeriodTo basePeriodFrom institutionList institutionType" listener="#{timeSeriesListBean.actionBasePeriodTo()}"  /> 
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel styleClass="nowrap" value="#{msgs['control.timeSeriesList.newTimeSeries.institutionTypes']}" />
+                        </p:column>
+                        <p:column>
+                            <p:selectCheckboxMenu id="institutionType" value="#{timeSeriesListBean.institutionTypeSelected}"
+                                                  disabled="#{timeSeriesListBean.institutionTypeDisable}"
+                                                  label="#{msgs['control.timeSeriesList.newTimeSeries.institutionTypes']}" 
+                                                  filter="false" filterMatchMode="startsWith" panelStyle="width:220px"
+                                                  styleClass="without-selectall">  
+                                <f:selectItems value="#{timeSeriesListBean.institutionTypeList}" /> 
+                                <p:ajax event="change"  update="institutionList createTimeSeriesDialog" listener="#{timeSeriesListBean.actionInstitutionType()}"  />
+                            </p:selectCheckboxMenu> 
+
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+                <p:pickList id="institutionList" value="#{timeSeriesListBean.institutionList}"
+                            var="institution"    converter="PickListConverter"
+                            itemLabel="#{institution.fullName}" itemValue="#{institution}" 
+                            addLabel="#{msgs['control.institutionList.add']}"
+                            addAllLabel="#{msgs['control.institutionList.addAll']}"
+                            removeLabel="#{msgs['control.institutionList.remove']}"
+                            removeAllLabel="#{msgs['control.institutionList.removeAll']}" > 
+                    <p:ajax event="transfer"  listener="#{timeSeriesListBean.actionTransfer}" update="createTimeSeriesDialog"  /> 
+                </p:pickList>  
+
+
+                <p:separator/>
+
+
+
+                <h:panelGrid style="margin-left: auto;margin-right: auto; " columns="2" cellpadding="10"  >
+                    <p:commandButton id="createTimeSeriesDialog"  value="#{msgs['button.create']}" action="#{timeSeriesListBean.save()}" disabled="#{timeSeriesListBean.createButtonDisabled}" 
+                                     oncomplete="newTimeSeriesWidget.hide();viewTimeSeriesDialog.show()" update=":form :viewForm:display" />
+                    <p:commandButton id="cancel"  value="#{msgs['button.cancel']}" onclick="newTimeSeriesWidget.hide()"/>
+                </h:panelGrid>
+
+            </p:dialog>
+
+        </h:form>
+
+        <h:form id="viewForm">
+
+            <ui:remove>
+                +--------------------------------+
+                | Przeglądanie szeregu czasowego |
+                +--------------------------------+
+            </ui:remove>
+
+            <p:dialog id="viewTimeSeries" widgetVar="viewTimeSeriesDialog"
+                      header="#{msgs['control.timeSeriesList.viewTimeSeries.title']}"
+                      modal="true"
+                      width="1050" height="550">
+
+                <ggcomp:printButton reportType="XLS" value="#{msgs['monitor.summary.saveToExcel']}" parameters="#{timeSeriesListBean.getSelectedReportParameters('XLS')}"
+                                  reportTemplateName="#{timeSeriesListBean.reportTemplateName}" reportData="#{timeSeriesListBean.selectedReportData}" />
+                <ggcomp:printButton reportType="PDF" value="#{msgs['button.print']}" parameters="#{timeSeriesListBean.getSelectedReportParameters('PDF')}"
+                                  reportTemplateName="#{timeSeriesListBean.reportTemplateName}"
+                                  reportData="#{timeSeriesListBean.selectedReportData}" reportFileName="#{timeSeriesListBean.reportTemplateName.concat('_pdf')}"/>
+                <p:commandButton value="#{msgs['button.close']}" onclick="viewTimeSeriesDialog.hide()"/>
+                <p:separator/>
+                <h:panelGrid id="display">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Data: "/>
+                        <p:outputLabel value="#{applicationBean.formatDate(
+                                                timeSeriesListBean.selectedTimeSeries.createTime,
+                                                applicationBean.dateTimeFormat)}"/>
+                        <p:outputLabel value="Utworzył: "/>
+                        <h:outputText value="#{timeSeriesListBean.selectedTimeSeries.createUser}"/>
+                    </h:panelGrid>
+
+                    <h:panelGrid style="zoom: 1.15">
+                        <h:outputText id="reportOutput" escape="false"  value="#{timeSeriesListBean.selectedHtmlReport}"></h:outputText>
+                    </h:panelGrid>
+
+                    <p:outputLabel id="commentLabel" value="#{msgs['control.timeSeriesList.viewTimeSeries.comment']}" rendered="#{timeSeriesListBean.enableComment}"/>
+                    <p:inputTextarea id="commentArea" cols="77" rows="5" autoResize="false" maxlength="#{5*77}" rendered="#{timeSeriesListBean.enableComment}"
+                                     value="#{timeSeriesListBean.selectedTimeSeries.comment}"/>
+                    <p:commandButton id="commentBtn" value="#{msgs['button.save']}" action="#{timeSeriesListBean.saveComment()}" update="display" rendered="#{timeSeriesListBean.enableComment}"/>
+
+                </h:panelGrid>
+            </p:dialog>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

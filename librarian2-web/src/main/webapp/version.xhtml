@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ggcomp="http://java.sun.com/jsf/composite/ggcomp"
+      template="/templates/main.xhtml">
+    <h:head>
+        <title>Version - LIBRARIAN2 - 2013</title>
+        <link rel="shortcut icon" href="#{request.contextPath}/images/favicon.ico"/>
+        <style type="text/css">
+            body {
+                height: 100%;
+                width: 100%;
+                margin: 0px;
+                padding: 0px;
+            }
+
+            #centeredcontent {
+                position: absolute;
+                top: 45%;
+                left: 45%;
+                margin-top: -10.5em;
+                margin-left: -20.5em;
+
+                width: 21em;
+                height: 9em;
+
+                color: #000;
+                background-color: white;
+                border: 0px;
+            }
+
+        </style>
+    </h:head>
+
+    <body>
+
+        <div id="centeredcontent" style="width:50%;hight:50%" align="center">
+            <p:panel header="Version information panel" style="width:100%;hight:100%">
+
+                <div align="left" style="width:100%;hight:100%">
+                    <b>Grzegorz Guściora - LIBRARIAN2 - 2014</b>
+                    <ul>
+                        <li>Version: VERSION_NUMBER</li>
+                        <li>Build time: EXECUTION_DATE_TIME</li>
+                        <li>Local addr: #{request.localAddr}</li>
+                        <li>Remote addr: #{request.remoteAddr}</li>
+                    </ul>
+                </div>
+            </p:panel>
+        </div>
+    </body>
+
+
+</html>
+

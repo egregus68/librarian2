@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" template="/templates/main.xhtml">
+    <ui:define name="pageTitle">
+        <h:outputLabel value="Aplikacja LIBRARIAN2"/>
+    </ui:define>
+    <ui:define name="body">
+        <h:form id="errorForm" >
+            <h:panelGrid style="text-align: center"  title="Brak uprawnień">
+                <h:panelGrid columns="2" style="text-align: left">
+
+                    <h:outputText value="Kod" />
+                    <h:outputText value="#{request.getAttribute('javax.servlet.error.status_code')}" />
+
+                    <h:outputText value="Servlet" />
+                    <h:outputText value="#{request.getAttribute('javax.servlet.error.servlet_name')}" />
+
+                    <h:outputText value="Szczegóły" />
+                    <h:outputText value="#{request.getAttribute('javax.servlet.error.exception')}" />
+
+                </h:panelGrid>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:ggcomp="http://java.sun.com/jsf/composite/ggcomp">
+
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['library.rent.head']}"/>
+    </ui:define>
+    <ui:define name="body"  >
+        <h:form id="filtr" >
+
+            <p:fieldset legend="#{msgs['admin.eventLog.search']}" toggleable="true" toggleSpeed="500">
+                <p:panelGrid styleClass="gridWithoutBorder" >
+                    <p:row>
+                        <p:column>#{msgs['admin.eventLog.dateTime']}</p:column>
+                        <p:column style="text-align: right;" >
+                            <p:outputLabel  style="text-align: right;" value="#{msgs['commons.period.from']}:"/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar locale="pl" value="#{eventLogBean.criteria.dateTimeStart}" id="popupButtonCal" showOn="button"   pattern="yyyy-MM-dd HH:mm"/>
+                        </p:column>
+                        <p:column>#{msgs['commons.period.to']}: </p:column>
+                        <p:column>
+                            <p:calendar locale="pl" value="#{eventLogBean.criteria.dateTimeEnd}" id="popupButtonCal2" showOn="button" pattern="yyyy-MM-dd HH:mm"/>
+                        </p:column>
+
+                    </p:row>
+                </p:panelGrid>
+                <p:panelGrid styleClass="gridWithoutBorder" >
+
+                    <p:row>
+                        <p:column colspan="1">
+                            #{msgs['admin.eventLog.group']}:
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu  id="selectedAssociationNo" value="#{eventLogBean.criteria.group}">
+                                <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="false" />
+                                <f:selectItems value="#{eventLogBean.groups}" var="option" itemLabel="#{msgs[option.msgKey]}" itemValue="#{option}" />
+                                <p:ajax event="change" update="selectFunction" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column colspan="1">
+                            #{msgs['admin.eventLog.function']}:
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="selectFunction"  value="#{eventLogBean.criteria.function}">
+                                <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="false" />
+                                <f:selectItems value="#{eventLogBean.functions}" var="option" itemLabel="#{msgs[option.msgKey]}" itemValue="#{option}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column></p:column>
+                        <p:column>
+                            <p:commandButton   immediate="false" ajax="false" value="#{msgs['button.search']}" type="submit" /><br></br><br></br>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1" >
+                            #{msgs['admin.eventLog.createdBy']}:
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu   value="#{eventLogBean.criteria.createdBy}">
+                                <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="false" />
+                                <f:selectItems value="#{eventLogBean.createdBy}" var="option" itemLabel="#{option}" itemValue="#{option}"  />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column></p:column>
+                        <p:column>
+                            <p:commandButton   value="#{msgs['commons.search.restoreDefaults']}"  action="#{eventLogBean.reset}" update="filtr :table"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+
+                        </p:column>
+                        <p:column>
+                            <h:outputText   style="white-space: normal;" value="#{msgs['admin.eventLog.describe']}:" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText   value="#{eventLogBean.criteria.describe}" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:fieldset>
+        </h:form>
+        <br></br>
+        <h:panelGrid columns="2" cellpadding="5" >
+            <h:form>
+                <ggcomp:printButton reportType="PDF" value="#{msgs['button.print']}"
+                                  reportData="#{eventLogBean.selectedReportData}"
+                                  parameters="#{eventLogBean.selectedReportParameters}"
+                                  reportTemplateName="DziennikZdarzen" />
+                <ggcomp:printButton reportType="XLS" value="#{msgs['button.export']}"
+                                  reportData="#{eventLogBean.selectedReportData}"
+                                  parameters="#{eventLogBean.selectedReportParameters}"
+                                  reportTemplateName="DziennikZdarzen" />
+            </h:form>
+        </h:panelGrid>
+        <h:form id="table" >
+            <p:dataTable  id="List"  value ="#{eventLogBean.modelLazy}" paginator="true" lazy="true"  var="dataTableItem"
+                          paginatorPosition="#{applicationBean.paginatorPosition}"
+                          rows="#{applicationBean.dataTableRows}"
+                          paginatorTemplate="#{applicationBean.dataTablePaginatorTemplate}"
+                          rowsPerPageTemplate="#{applicationBean.dataTableRowsPerTableTemplate}"
+                          currentPageReportTemplate="#{applicationBean.currentpageReportTemplate}"
+                          emptyMessage="#{msgs['no.records']}">
+
+
+                <p:column headerText="#{msgs['admin.eventLog.dateTime']}" style="text-align: center;" sortBy="#{dataTableItem.dateTime}">
+                    <h:outputText value="#{dataTableItem.dateTime}" >
+                        <f:convertDateTime pattern="#{applicationBean.dateTimeFormat}" />
+                    </h:outputText>
+                </p:column>
+                <p:column  headerText="#{msgs['admin.eventLog.group']}" style="text-align: center;" sortBy="#{dataTableItem.group}">
+                    <h:outputText value="#{msgs[dataTableItem.group.msgKey]}" />
+                </p:column>
+
+                <p:column headerText="#{msgs['admin.eventLog.function']}" style="text-align: center;" sortBy="#{dataTableItem.function}" >
+                    <h:outputText value="#{msgs[dataTableItem.function.msgKey]}" />
+                </p:column>
+                <p:column headerText="#{msgs['admin.eventLog.process']}" style="text-align: center;" sortBy="#{dataTableItem.operation}">
+                    <h:outputText value="#{msgs[dataTableItem.operation.msgKey]}" />
+                </p:column>
+                <p:column headerText="#{msgs['admin.eventLog.createdBy']}" style="text-align: center;" sortBy="#{dataTableItem.createdBy.login}">
+                    <h:outputText value="#{dataTableItem.createdBy.login}" />
+                </p:column>
+                <p:column headerText="#{msgs['admin.eventLog.describe']}" style="text-align: center;" sortBy="#{dataTableItem.describe}">
+                    <h:outputText value="#{dataTableItem.describe}" />
+                </p:column>
+                <p:column headerText="#{msgs['commons.action']}" style="text-align: center;" >
+                    <p:commandButton   title="#{msgs['button.details']}" icon="ui-icon-zoomin"    oncomplete="detailsWidget.show()" update=":details" >
+                        <f:setPropertyActionListener value="#{dataTableItem}" target="#{eventLogBean.eventLogSelected}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <h:form id="details">
+            <p:dialog    widgetVar="detailsWidget"   modal="true" closable="false"
+                         header="#{msgs['admin.eventLog.details.head']}" >
+                <h:panelGrid style="margin-left: auto;margin-right: auto; font-size: 10pt;" columns="1"  >
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <ggcomp:printButton reportType="PDF" value="#{msgs['button.print']}"
+                                          reportData="#{eventLogBean.selectedEventData}"
+                                          parameters="#{eventLogBean.selectedEventParameters}"
+                                          reportTemplateName="DziennikZdarzenSzczeg" />
+                        <p:commandButton     value="#{msgs['admin.eventLog.back']}" onclick="detailsWidget.hide()"   />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <h:outputLabel  value="#{msgs['admin.eventLog.dateTime']}:"   />
+                        <h:panelGroup>
+                            <ggcomp:opacityBox>
+                                <h:outputText value="#{eventLogBean.eventLogSelected.dateTime}" >
+                                    <f:convertDateTime pattern="#{applicationBean.dateTimeFormat}"/>
+                                </h:outputText>
+                            </ggcomp:opacityBox>
+                        </h:panelGroup>
+                        <h:outputLabel  value="#{msgs['admin.eventLog.group']}:"   />
+                        <h:panelGroup>
+                            <ggcomp:opacityBox>
+                                <h:outputText value="#{msgs[eventLogBean.eventLogSelected.group.msgKey]}" />
+                            </ggcomp:opacityBox>
+                        </h:panelGroup>
+                        <h:outputLabel  value="#{msgs['admin.eventLog.function']}:"   />
+                        <h:panelGroup>
+                            <ggcomp:opacityBox>
+                                <h:outputText value="#{msgs[eventLogBean.eventLogSelected.function.msgKey]}" />
+                            </ggcomp:opacityBox>
+                        </h:panelGroup>
+                        <h:outputLabel  value="#{msgs['admin.eventLog.process']}:"   />
+                        <h:panelGroup>
+                            <ggcomp:opacityBox>
+                                <h:outputText value="#{msgs[eventLogBean.eventLogSelected.operation.msgKey]}" />
+                            </ggcomp:opacityBox>
+                        </h:panelGroup>
+
+                        <h:outputLabel  value="#{msgs['admin.eventLog.monthBase']}:"   />
+                        <h:panelGroup>
+                        </h:panelGroup>
+                        <h:outputLabel  value="#{msgs['admin.eventLog.institutionDiscriminant']}:"   />
+                        <h:panelGroup>
+                            <ggcomp:opacityBox>
+                            </ggcomp:opacityBox>
+                        </h:panelGroup>
+                        <h:outputLabel  value="#{msgs['admin.eventLog.createdBy']}:"   />
+                        <h:panelGroup>
+                            <ggcomp:opacityBox>
+                                <h:outputText value="#{eventLogBean.eventLogSelected.createdBy.login}" />
+                            </ggcomp:opacityBox>
+                        </h:panelGroup>
+                        <h:outputLabel  value="#{msgs['admin.eventLog.describe']}:"   />
+                        <h:panelGroup>
+                            <ggcomp:opacityBox>
+                                <h:outputText value="#{eventLogBean.eventLogSelected.describe}" />
+                            </ggcomp:opacityBox>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:panelGrid>
+
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ggcomp="http://java.sun.com/jsf/composite/ggcomp">
+    <f:view contentType="text/html">
+        <h:head>
+            <title>LIBRARIAN2</title>
+            <meta http-equiv="content-type" content="text/xhtml; charset=UTF-8" />
+            <!-- <h:outputStylesheet library="css" name="main.css"/> -->
+            <!-- <h:outputStylesheet library="css" name="skin/skin.css"/> -->
+            <h:outputStylesheet library="css" name="librarian.css"/>
+            <h:outputScript library="ggcomp" name="js/primefacesLocales.js" />
+            <!-- <h:outputStylesheet library="css" name="main.css"/>-->
+            <script type="text/javascript">
+                //<![CDATA[
+                var numericRegex = /\d+\.?\d*/;
+                function validateNumericInput(evt, text) {
+                    var theEvent = evt || window.event;
+                    var key = theEvent.keyCode || theEvent.which;
+                    key = String.fromCharCode(key);
+                    if (key === ',') {
+                        theEvent.returnValue = (text.indexOf(key) < 0);
+                    } else {
+                        var regex = /\d/;
+                        if (!regex.test(key)) {
+                            theEvent.returnValue = false;
+                            if (theEvent.preventDefault)
+                                theEvent.preventDefault();
+                        }
+                    }
+                }
+                //]]>
+            </script>
+        </h:head>
+
+        <h:body>
+            <p:growl id="messages" showDetail="false" autoUpdate="true" sticky="true"/>
+            <ggcomp:ajaxWaitingDialog/>
+            <table border="0" cellpadding="5" cellspacing="0" width="1200" align="center">
+                <tbody>
+                    <tr>
+                        <td width="100%">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+                                <tr>
+                                    <td>
+                                        <div style="padding-left: 5pt;">
+                                            <h:outputLabel value="Grzegorz Guściora" style="font-size: 12pt; margin-right: 10pt"/>
+                                        </div>
+                                    </td>
+                                    <td align="center">
+                                        <h:outputLabel value="LIBRARIAN2 (SHORT_VERSION)" style="color: #2A4816; font-family: Segoe UI Semibold; font-size: 16pt;"/>
+                                    </td>
+                                    <td align="right" width="45%">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+                                            <tr>
+                                                <td>
+                                                    <div class="tilte" style="font-size: 11pt; text-align: right">
+                                                        <h:outputLabel value="(#{loginBean.currentUser}) #{loginBean.user.firstName} #{loginBean.user.lastName}" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <i>
+                                                        <div  style="font-size: 9pt; text-align: right">
+                                                        </div>
+                                                    </i>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ui:include src="/templates/menu.xhtml" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ggcomp:breadcrumb/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <p:panel>
+                                <f:facet name="header">
+                                    <ui:insert name="pageTitle">LIBRARIAN2</ui:insert>
+                                </f:facet>
+                                <ui:insert name="body">Default content</ui:insert>
+                            </p:panel>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h:form id="aboutForm">
+            </h:form>
+
+        </h:body>
+    </f:view>
+</html>

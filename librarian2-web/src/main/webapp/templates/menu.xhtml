@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:form>
+        <p:menubar>
+            <p:submenu label="#{msgs['menu.library']}" rendered="#{loginBean.isUserInRole('ADMIN')}" >
+                <p:menuitem value="#{msgs['menu.library.publication']}" action="publications" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.basePeriod'])}" />
+                <p:menuitem value="#{msgs['menu.library.reader']}" action="readers" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.reserveSubject'])}" />
+                <p:menuitem value="#{msgs['menu.library.rent']}" action="rents" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.ratesTables'])}" />
+            </p:submenu>
+
+
+            <p:submenu label="#{msgs['menu.admin']}" rendered="#{loginBean.isUserInRole('ADMIN')}" >
+                <p:menuitem value="#{msgs['menu.admin.basePeriod']}" action="basePeriod" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.basePeriod'])}" />
+                <p:submenu label="#{msgs['menu.admin.interestRates']}" rendered="#{loginBean.isUserInRole('ADMIN')}" >
+                    <p:menuitem value="#{msgs['menu.admin.interestRates.RO']}" action="ratesRO" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.interestRates.RO'])}" />
+                    <p:menuitem value="#{msgs['menu.admin.interestRates.lombardAndRediscountRate']}" action="lombardAndRediscountRate" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.interestRates.lombardAndRediscountRate'])}" />
+                </p:submenu>
+                <p:menuitem value="#{msgs['menu.admin.reserveSubject']}" action="reserveSubject" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.reserveSubject'])}" />
+                <p:menuitem value="#{msgs['menu.admin.ratesTables']}" action="tableRate" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.ratesTables'])}" />
+                <p:submenu label="#{msgs['menu.admin.impors']}" rendered="#{loginBean.isUserInRole('ADMIN')}" >
+                    <p:menuitem value="#{msgs['menu.admin.imports.BISAndFINREP']}" action="importBIS" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.imports.BISAndFINREP'])}" />
+                    <p:menuitem value="#{msgs['menu.admin.imports.ZSK-KG']}" action="importZSK" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.imports.ZSK-KG'])}" />
+                    <p:menuitem value="#{msgs['menu.admin.imports.view']}" action="importList" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.admin.imports.view'])}" />
+                </p:submenu>
+
+
+            </p:submenu>
+
+            <p:submenu label="#{msgs['menu.control']}" rendered="#{loginBean.isUserInRole('MANAGER') or loginBean.isUserInRole('USER')}" >
+                <p:menuitem value="#{msgs['menu.control.dataSubjectInPeriodReserve']}" action="dataSubjectInPeriodReserve" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MANAGER')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.control.dataSubjectInPeriodReserve'])}"  />
+                <p:submenu label="#{msgs['menu.control.summary']}" rendered="#{loginBean.isUserInRole('MANAGER') or loginBean.isUserInRole('USER')}" >
+                    <p:menuitem value="#{msgs['menu.control.summary.reserveRequirementPeriod']}" action="summaryReserveRequirementPeriodList" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MANAGER') or loginBean.isUserInRole('USER')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.control.summary.reserveRequirementPeriod'])}" />
+                    <p:menuitem value="#{msgs['menu.control.summary.annualNIK']}" action="summaryNIKList" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MANAGER')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.control.summary.annualNIK'])}" />
+                </p:submenu>
+                <p:menuitem value="#{msgs['menu.control.timeSeries']}" action="timeSeriesList" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MANAGER')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.control.arrayTime'])}" />
+                <p:menuitem value="#{msgs['menu.control.resourcesFromAbroad']}" action="contractList" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MANAGER')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.control.resourcesFromAbroad'])}" />
+                <p:submenu label="#{msgs['menu.control.communication']}" rendered="#{loginBean.isUserInRole('MANAGER')}" >
+                    <p:menuitem value="#{msgs['menu.control.communication.importReportFile']}" action="importReportFileList" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MANAGER')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.control.communicationWSDL.ImportReport'])}" />
+                    <p:menuitem value="#{msgs['menu.control.communication.exportMessage']}" action="exportMessageList" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MANAGER')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.control.communicationWSDL.messagesSent'])}" />
+                </p:submenu>
+            </p:submenu>
+            
+            <p:submenu label="#{msgs['menu.monitor']}" rendered="#{loginBean.isUserInRole('MONITOR')}" >
+                <p:menuitem value="#{msgs['menu.monitor.dailySummary']}" action="dailySummary" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MONITOR')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.monitor.dailySummary'])}" />
+                <p:menuitem value="#{msgs['menu.monitor.arrayTime']}" action="timeSeries" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MONITOR')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.monitor.arrayTime'])}" />
+                <p:menuitem value="#{msgs['menu.monitor.annualSummary']}" action="annualSummary" styleClass="nowrap" rendered="#{loginBean.isUserInRole('MONITOR')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.monitor.annualSummary'])}" />
+            </p:submenu>
+            
+            <p:submenu label="#{msgs['menu.system']}" rendered="#{loginBean.isUserInRole('ADMIN')}" >
+                <p:menuitem value="#{msgs['menu.system.eventLog']}" action="eventLog" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.system.eventLog'])}" />
+                <p:menuitem value="#{msgs['menu.system.users']}" action="users" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.system.users'])}" />
+                <p:menuitem value="#{msgs['menu.system.scheduledTask']}" action="scheduledTask" styleClass="nowrap" rendered="#{loginBean.isUserInRole('ADMIN')}" actionListener="#{breadCrumbBean.setPath(msgs['breadCrumb.system.scheduledTask'])}" />
+            </p:submenu>            
+        </p:menubar>            
+
+    </h:form>
+
+</html>

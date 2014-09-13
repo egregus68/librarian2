@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:composite="http://java.sun.com/jsf/composite"
+                >
+
+    <!-- INTERFACE -->
+    <composite:interface/>
+
+    <!-- IMPLEMENTATION -->
+    <composite:implementation>
+
+        <p:commandButton title="Raport" icon="ui-icon-document" rendered="#{dataTableItem.importStatus.name().equals('INCOMPLETE')}"
+                         oncomplete="showWidgetImportReport.show();"
+                         update=":showImportForm:showImportReport" >
+            <f:setPropertyActionListener target="#{importListBean.importReport}" value="#{dataTableItem}" />
+        </p:commandButton>
+        <p:commandButton title="Raport" icon="ui-icon-document" rendered="#{not dataTableItem.importStatus.name().equals('INCOMPLETE')}"
+                         oncomplete="showWidgetImportReport.show();"
+                         update=":showImportForm:showImportReport" >
+            <f:setPropertyActionListener target="#{importListBean.importReport}" value="#{dataTableItem}" />
+        </p:commandButton>
+
+        <h:form id="showImportForm">
+
+            <p:dialog id="showImportReport" widgetVar="showWidgetImportReport" header="#{msgs['admin.importZSK.head']}"
+                      modal="true" resizable="false" rendered="true" visible="#{importListBean.showImportReport}" >
+                <h:panelGrid id="importReport" styleClass="gridWithoutBorder" >
+                    <h:panelGrid id="gridDialogHead" columns="2" cellpadding="7" style="margin: 0 auto;">
+                        <h:outputLabel  styleClass="nowrap" value="#{msgs['admin.importList.dataDate']}:" />
+                        <h:outputText value="#{importListBean.importReport.importDate}">
+                            <f:convertDateTime pattern="YYYY-MM-dd" />
+                        </h:outputText>
+                    </h:panelGrid>
+                    <h:panelGrid id="gridDialogBody" columns="1" cellpadding="2" >
+                        <h:outputLabel  styleClass="nowrap" style="font-weight: bold;" value="#{importListBean.importReport.errorMessage}" />
+                    </h:panelGrid>
+                    <h:panelGrid  columns="1" cellpadding="2" >
+                        <h:outputLabel  styleClass="nowrap" style="font-weight: bold;" value="#{msgs['admin.importList.errorList']}" />
+                    </h:panelGrid>
+                    <h:panelGrid id="gridDialogError" columns="1" cellpadding="7" style="margin: 0 auto;">
+                        <p:dataList id="displayCities" value="#{importListBean.importReport.errorData}"
+                                    var="errorDetails" rows="25" paginator="true" paginatorAlwaysVisible="false">
+                            <h:outputText value="#{errorDetails.errorMessageDetails}"  />
+                        </p:dataList>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <h:panelGrid style="margin-left: auto;margin-right: auto; " columns="1" cellpadding="10"  >
+                        <p:commandButton oncomplete="showWidgetImportReport.hide()" value="#{msgs['button.close']}" />
+                    </h:panelGrid>
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+    </composite:implementation>
+</ui:composition>

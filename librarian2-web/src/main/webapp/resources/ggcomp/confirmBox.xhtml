@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <composite:interface>
+        <composite:attribute name="widgetName" required="true" />
+        <composite:attribute name="head" required="false" default=""/>
+        <composite:attribute name="message" required="false" default="" />
+        <composite:attribute name="messageParam0" required="false" default="" />
+        <composite:attribute name="oncompleteButton1" required="false" default="" />
+        <composite:attribute name="actionButton1" required="false" method-signature="java.lang.Void actionButton1()" />
+        <composite:attribute name="actionButton2" required="false" method-signature="java.lang.Void actionButton2()" />
+        <composite:attribute name="valueButton1" required="false" default="Zapisz" />
+        <composite:attribute name="valueButton2"  required="false" default="Anuluj"/>
+        <composite:attribute name="turnOnButton2"  required="false" default="false"/>
+        <composite:attribute name="turnOnButton1"  required="false" default="false"/>
+        <composite:attribute name="updateButton2"  required="false" default=""/>
+        <composite:attribute name="updateButton1"  required="false" default=""/>
+        <composite:attribute name="turnOnMessage" required="false" default="false"/>
+        <composite:attribute name="closable" required="false" default="true"/>
+        <composite:attribute name="renderdBottomSeparator" required="false" default="true"/>
+        <composite:attribute name="width" required="false" default="300"/>
+    </composite:interface>
+    <composite:implementation>
+        <p:dialog id="#{cc.attrs.id}_panel"
+                  resizable="true"
+                  draggable="false"
+                  closable="false"
+                  modal="true"
+                  header="#{cc.attrs.head}"
+                  widgetVar="#{cc.attrs.widgetName}" width="#{cc.attrs.width}">
+            <h:panelGrid rendered="#{cc.attrs.turnOnMessage}" style="margin-left: auto;margin-right: auto; padding-left:  40px;padding-right:  40px; font-family: Segoe UI Semibold; font-size: 12pt; white-space: normal; text-align: center; "  >
+                <h:outputFormat value="#{cc.attrs.message}" style="" escape="false">
+                    <f:param value="#{cc.attrs.messageParam0}"/>
+                </h:outputFormat>
+            </h:panelGrid>
+
+            <p:separator rendered="#{cc.attrs.turnOnMessage}"/>
+            <h:panelGrid style="margin-left: auto;margin-right: auto; font-size: 10pt;" columns="1"  >
+                <composite:insertChildren/>
+            </h:panelGrid>
+
+            <p:separator rendered="#{cc.attrs.renderdBottomSeparator}" />
+            <h:panelGrid style="margin-left: auto;margin-right: auto; " columns="2" cellpadding="10"  >
+                <p:commandButton id="#{cc.attrs.id}_confirm"  rendered="#{cc.attrs.turnOnButton1}"  value="#{cc.attrs.valueButton1}"
+                                 action="#{cc.attrs.actionButton1}"   update="#{cc.attrs.updateButton1}"
+                                 oncomplete="#{cc.attrs.oncompleteButton1}" onclick="#{cc.attrs.widgetName}.hide()"/>
+                <p:commandButton id="#{cc.attrs.id}_declise"  rendered="#{cc.attrs.turnOnButton2}"  value="#{cc.attrs.valueButton2}"
+                                 action="#{cc.attrs.actionButton2}" onclick="#{cc.attrs.widgetName}.hide()" update="#{cc.attrs.updateButton2}" />
+            </h:panelGrid>
+        </p:dialog>
+    </composite:implementation>
+</html>

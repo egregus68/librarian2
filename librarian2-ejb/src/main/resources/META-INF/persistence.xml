@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <!-- 
+        <persistence-unit name="librarian2PU" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>java:/librarian2DS</jta-data-source>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+          <property name="hibernate.hbm2ddl.auto" value="update"/>
+          <property name="hibernate.show_sql" value="false"/>
+          <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/>
+        </properties>
+      </persistence-unit>
+    -->
+  <persistence-unit name="librarian2PU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>java:/librarian2DS</jta-data-source>
+    <class>pl.com.gregus.admin.entity.User</class>
+    <class>pl.com.gregus.admin.entity.UserGroup</class>
+    <class>pl.com.gregus.service.entity.EventLog</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="eclipselink.target-server" value="JBoss"/>
+      <property name="eclipselink.logging.level.sql" value="INFO"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+      <property name="eclipselink.logging.logger" value="ServerLogger"/>
+      <property name="eclipselink.logging.level" value="FINEST"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
+      <property name="eclipselink.cache.size.default" value="0"/>
+      <property name="eclipselink.cache.type.default" value="None"/>
+      <property name="eclipselink.query-results-cache" value="false"/>
+      <property name="eclipselink.jdbc.cache-statements" value="true"/>
+      <property name="eclipselink.jdbc.bind-parameters" value="true"/>
+      <property name="eclipselink.jdbc.batch-writing" value="JDBC"/>
+      <property name="eclipselink.jdbc.batch-writing.size" value="1000"/>
+      <property name="eclipselink.persistence-context.flush-mode" value="commit"/>
+      <!--
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+      <property name="eclipselink.ddl-generation.output-mode" value="sql-script"/>
+      <property name="eclipselink.drop-ddl-jdbc-file-name" value="00_db_librarian2_drop.sql"/>
+      <property name="eclipselink.create-ddl-jdbc-file-name" value="00_db_librarian2_create.sql"/>
+      <property name="eclipselink.application-location" value="c:\TEMP\"/>
+      -->
+    </properties>
+  </persistence-unit>
+</persistence>

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:ggcomp="http://java.sun.com/jsf/composite/ggcomp">
+
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['admin.users.head']}"/>
+    </ui:define>
+    <ui:define name="body"  >
+        <p:growl />
+        <h:form id="filtr" >
+            <p:panelGrid styleClass="gridWithoutBorder" >
+                <p:row>
+                    <p:column>
+                        #{msgs['commons.user']}:
+                    </p:column>
+                    <p:column>
+                        <p:inputText  value="#{usersBean.user}" />
+                    </p:column>
+                    <p:column rowspan="3" ><td width="20"></td></p:column>
+                    <p:column rowspan="3">
+                        <p:commandButton   immediate="false" ajax="false" value="#{msgs['button.search']}" type="submit" action="#{usersBean.find()}"/>
+                        <p:commandButton   value="#{msgs['button.default']}"  action="#{usersBean.reset}" update="filtr :table"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>#{msgs['admin.users.grant']}:</p:column>
+                    <p:column>
+                        <p:selectOneMenu    value="#{usersBean.selectedGrant}"  >
+                            <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}"  />
+                            <f:selectItems value="#{usersBean.availableGroups}" var="option" itemLabel="#{option.description}" itemValue="#{option.name}" />
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>#{msgs['commons.status']}:</p:column>
+                    <p:column>
+                        <p:selectOneMenu    value="#{usersBean.selectedStatus}"  >
+                            <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}"  />
+                            <f:selectItems value="#{usersBean.status}" var="option" itemLabel="#{msgs[usersBean.message(option)]}" itemValue="#{option}" />
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+
+        <h:form id="modifity">
+            <ggcomp:confirmBox
+                widgetName="modifyWidget"
+                head="#{msgs['admin.users.modify.head']}"
+                turnOnButton1="true"
+                turnOnButton2="true"
+                actionButton1="#{usersBean.modify()}"
+                updateButton1=":table, :modifity" >
+                <h:panelGrid style="margin-left: auto;margin-right: auto;"  cellpadding="15">
+                    <h:panelGroup>
+                        #{msgs['commons.user']}:<p:spacer height="20" />
+                        <p:inputText disabled="true"  value="#{usersBean.newUser.login}"/>
+                        <br></br>
+                        <br></br>
+                        <p:dataTable id="historyList"  value="#{usersBean.newUserGroups.keySet().toArray()}" var="dataTableItem">
+                            <p:column rendered="true"    style=" text-align: center;">
+                                <p:selectBooleanCheckbox value="#{usersBean.newUserGroups[dataTableItem]}"  />
+                            </p:column>
+                            <p:column headerText="#{msgs['commons.action']}"    style=" text-align: center;">
+                                <h:outputText value="#{dataTableItem.description}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ggcomp:confirmBox>
+        </h:form>
+        <h:form id="add">
+            <ggcomp:confirmBox
+                widgetName="addUserWidget"
+                head="#{msgs['admin.users.add.head']}"
+                turnOnButton1="true"
+                turnOnButton2="true"
+                actionButton1="#{usersBean.add()}"
+                updateButton1=":table, :add"
+                width="400">
+                <h:panelGrid style="margin-left: auto;margin-right: auto;" cellpadding="15">
+                    <h:panelGroup>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel for="login" value="#{msgs['commons.user']}:" />
+                            <p:inputText id="login" value="#{usersBean.newUser.login}"/>
+
+                            <h:outputLabel for="password" value="#{msgs['commons.password']}:" />
+                            <p:inputText id="password" value="#{usersBean.newUser.password}" maxlength="16" >
+                                <f:converter converterId="pl.com.gregus.common.converter.SHAConverter"></f:converter>
+                            </p:inputText>
+
+                            <h:outputLabel for="firstname" value="#{msgs['commons.firstname']}:" />
+                            <p:inputText id="firstname" value="#{usersBean.newUser.firstName}"/>
+
+                            <h:outputLabel for="lastname" value="#{msgs['commons.lastname']}:" />
+                            <p:inputText id="lastname" value="#{usersBean.newUser.lastName}"/>
+
+                            <h:outputLabel for="email" value="#{msgs['commons.email']}:" />
+                            <p:inputText id="email" value="#{usersBean.newUser.email}"/>                        
+                        </h:panelGrid>
+                        <br></br>
+                        <br></br>
+                        <p:dataTable id="historyList" value="#{usersBean.newUserGroups.keySet().toArray()}" var="dataTableItem">
+                            <p:column rendered="true" style=" text-align: center;">
+                                <p:selectBooleanCheckbox value="#{usersBean.newUserGroups[dataTableItem]}"  />
+                            </p:column>
+                            <p:column headerText="#{msgs['commons.action']}" style=" text-align: center;">
+                                <h:outputText value="#{dataTableItem.description}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ggcomp:confirmBox>
+        </h:form>
+        <h:form id="confirmActivation">
+            <ggcomp:confirmBox
+                widgetName="activateWidget"
+                head="#{msgs['admin.users.activate.head']}"
+                turnOnButton1="true"
+                turnOnButton2="true"
+                actionButton1="#{usersBean.activate()}"
+                valueButton1="#{msgs['commons.yes']}"
+                updateButton1=":table, :confirmActivation" >
+                <h:panelGrid style="margin-left: auto;margin-right: auto;"  cellpadding="15">
+                    <h:panelGroup>
+                        <h:outputText value="#{msgs['admin.users.activate.text']} #{usersBean.newUser.login}?"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ggcomp:confirmBox>
+        </h:form>
+        <h:form id="confirmInactivation">
+            <ggcomp:confirmBox
+                widgetName="inactivateWidget"
+                head="#{msgs['admin.users.inactivate.head']}"
+                turnOnButton1="true"
+                turnOnButton2="true"
+                actionButton1="#{usersBean.deActivate()}"
+                valueButton1="#{msgs['commons.yes']}"
+                updateButton1=":table, :confirmActivation" >
+                <h:panelGrid style="margin-left: auto;margin-right: auto;"  cellpadding="15">
+                    <h:panelGroup>
+                        <h:outputText value="#{msgs['admin.users.inactivate.text']} #{usersBean.newUser.login}?"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ggcomp:confirmBox>
+        </h:form>
+        <h:panelGrid columns="2" cellpadding="5" >
+            <h:form>
+                <p:commandButton action="#{usersBean.selectedUser(null)}" oncomplete="addUserWidget.show()" value="#{msgs['button.add']}" process="@this"/>
+                <ggcomp:printButton reportType="PDF" value="#{msgs['button.print']}"
+                                  reportData="#{usersBean.prepareReportData()}"
+                                  parameters="#{usersBean.selectedReportParameters}"
+                                  reportTemplateName="ListaUzytkownikow" />
+            </h:form>
+        </h:panelGrid>
+        <h:form id="table" >
+
+            <p:dataTable  id="List"  value="#{usersBean.modelLazy}" paginator="true" lazy="true"  var="dataTableItem"
+                          paginatorPosition="#{applicationBean.paginatorPosition}"
+                          rows="#{applicationBean.dataTableRows}"
+                          paginatorTemplate="#{applicationBean.dataTablePaginatorTemplate}"
+                          rowsPerPageTemplate="#{applicationBean.dataTableRowsPerTableTemplate}"
+                          currentPageReportTemplate="#{applicationBean.currentpageReportTemplate}"
+                          emptyMessage="#{msgs['no.records']}">
+                <!--value="{basePeriodBean.ROs}"-->
+                <p:column headerText="#{msgs['commons.user']}" style=" text-align: center;" sortBy="#{dataTableItem.login}">
+                    <h:outputText value="#{dataTableItem.login}" />
+                </p:column>
+
+                <p:column headerText="#{msgs['admin.users.grant']}"   style=" text-align: center;" >
+                    <ui:repeat value="#{dataTableItem.groups}" var="item" >
+                        <h:outputText value="#{item.description}"  />
+                        <br></br>
+                    </ui:repeat>
+                </p:column>
+                <p:column  headerText="#{msgs['commons.status']}" style=" text-align: center;" sortBy="#{dataTableItem.status}">
+
+                    <h:outputText value="#{msgs[dataTableItem.status.value]}" />
+                </p:column>
+                <p:column headerText="#{msgs['commons.action']}"   style=" text-align: center;" >
+
+                    <p:commandButton title="#{msgs['commons.modifity']}" icon="ui-icon-pencil" action="#{usersBean.selectedUser(dataTableItem)}" oncomplete="modifyWidget.show()" update=":modifity" rendered="#{'ACTIVE' eq dataTableItem.status}" />
+                    <p:commandButton title="#{msgs['admin.users.deactive']}" icon="ui-icon-closethick" action="#{usersBean.selectedUser(dataTableItem)}" oncomplete="inactivateWidget.show()" update=":confirmInactivation"   rendered="#{('ACTIVE' eq dataTableItem.status) and not usersBean.isLoggedUser(dataTableItem.login)}" />
+                    <p:commandButton title="#{msgs['admin.users.active']}" icon="ui-icon-check" action="#{usersBean.selectedUser(dataTableItem)}" oncomplete="activateWidget.show()" update=":confirmActivation" rendered="#{('INACTIVE' eq dataTableItem.status) and not usersBean.isLoggedUser(dataTableItem.login)}"/>
+                    <p:commandButton title="#{msgs['admin.users.delete']}" icon="ui-icon-trash" action="#{usersBean.delete(dataTableItem.id)}"  ajax="false" rendered="false"/>
+
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+        <h:form id="errorInfo">
+            <p:dialog widgetVar="errorDialog" header="#{msgs['admin.user.error']}" modal="true">
+                <h:outputText value="#{msgs[usersBean.errorMessage]}" />
+                <br />
+                <p:commandButton onclick="errorDialog.hide();" value="#{msgs['button.close']}"/>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

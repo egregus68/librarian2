@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+
+
+
+    <h:panelGrid columns="1" width="100%">
+        <h:outputFormat value="#{msgs['control.timeSeriesList.viewTimeSeries.PD00xTimeSeriec.head1']}">
+            <f:param value="#{timeSeriesListBean.timeSeriesSelected.formType}"/>
+            <f:param value="#{timeSeriesListBean.timeSeriesSelected.position}"/>
+            <f:param value="#{applicationBean.formatDate(timeSeriesListBean.timeSeriesSelected.dateFrom,applicationBean.dateFormat)}"/>
+            <f:param value="#{applicationBean.formatDate(timeSeriesListBean.timeSeriesSelected.dateTo,applicationBean.dateFormat)}"/>
+        </h:outputFormat>
+    </h:panelGrid>
+
+    <!--BANK-->
+     <p:dataTable var="timeSeriesDataItem" value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataBank}" style="margin-bottom: -8px;" >
+         
+
+        <p:columnGroup type="header">  
+            <p:row>
+                <p:column rowspan="2" headerText="#{msgs['control.timeSeriesList.viewTimeSeries.PD00xTimeSeriec.id']}"/>  
+                <p:column colspan="2" headerText="#{msgs['control.timeSeriesList.viewTimeSeries.PD00xTimeSeriec.institution']}" />                 
+                <p:column rowspan="2">
+                    <f:facet name="header">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.dateFrom}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>  
+                <p:column rowspan="2" headerText="t-3" />  
+                <p:column rowspan="2" headerText="t-2" />  
+                <p:column rowspan="2" headerText="t-1" />  
+                <p:column rowspan="2"  >
+                    <f:facet name="header">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.dateTo}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>   
+            </p:row>  
+
+            <p:row>  
+                <p:column headerText="#{msgs['control.timeSeriesList.viewTimeSeries.PD00xTimeSeriec.no']}" />  
+                <p:column headerText="#{msgs['control.timeSeriesList.viewTimeSeries.PD00xTimeSeriec.symbol']}" />  
+            </p:row>  
+
+        </p:columnGroup>  
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.id}"/>  
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.no}"/>
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.symbol}"/>  
+        </p:column> 
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.tn}"> 
+                <f:convertNumber/> 
+            </h:outputLabel> 
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.t3}"> 
+                <f:convertNumber/> 
+            </h:outputLabel> 
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.t2}"> 
+                <f:convertNumber/> 
+            </h:outputLabel>  
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.t1}"> 
+                <f:convertNumber/> 
+            </h:outputLabel>  
+        </p:column> 
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.t}"> 
+                <f:convertNumber/> 
+            </h:outputLabel>  
+        </p:column> 
+
+        <p:columnGroup type="footer">  
+            <p:row>  
+                <p:column colspan="3" footerText="#{msgs['control.timeSeriesList.viewTimeSeries.PD00xTimeSeriec.summaryBanks']}"  
+                          style="text-align:right;" />  
+
+                <p:column>
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryBank.tnSum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>  
+
+                <p:column>
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryBank.t3Sum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column> 
+
+                <p:column>
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryBank.t2Sum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column> 
+
+                <p:column>
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryBank.t1Sum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column> 
+
+                <p:column>
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryBank.tSum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column> 
+            </p:row>  
+        </p:columnGroup>  
+
+
+    </p:dataTable>
+    
+
+
+ 
+    
+    
+    
+    <!--SKOK-->
+    <p:dataTable var="timeSeriesDataItem" value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSKOK}" style="margin-top: 0px;"  styleClass="hide-column-names">
+
+
+        <p:column  styleClass="timeseries">  
+            <p:outputLabel value="#{timeSeriesDataItem.id}"/>  
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <p:outputLabel value="#{timeSeriesDataItem.no}"/>
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <p:outputLabel value="#{timeSeriesDataItem.symbol}"/>  
+        </p:column> 
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.tn}"> 
+                <f:convertNumber/> 
+            </h:outputLabel> 
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.t3}"> 
+                <f:convertNumber/> 
+            </h:outputLabel> 
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.t2}"> 
+                <f:convertNumber/> 
+            </h:outputLabel>  
+        </p:column>  
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.t1}"> 
+                <f:convertNumber/> 
+            </h:outputLabel>  
+        </p:column> 
+
+        <p:column styleClass="timeseries">  
+            <h:outputLabel value="#{timeSeriesDataItem.t}"> 
+                <f:convertNumber/> 
+            </h:outputLabel>  
+        </p:column> 
+
+        <p:columnGroup type="footer">  
+            <p:row>  
+                <p:column colspan="3" footerText="#{msgs['control.timeSeriesList.viewTimeSeries.PD00xTimeSeriec.summarySKOK']}"  
+                            style="text-align:right; white-space: pre; overflow: auto;"  />  
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummarySKOK.tnSum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummarySKOK.t3Sum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummarySKOK.t2Sum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummarySKOK.t1Sum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column> 
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummarySKOK.tSum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>  
+            </p:row> 
+            <p:row>  
+                <p:column colspan="3" footerText="#{msgs['control.timeSeriesList.viewTimeSeries.PD00xTimeSeriec.summaryInstitutions']}"  
+                          style="text-align:right;  padding: 2px 2px 2px 2px !important;"  />  
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryALL.tnSum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryALL.t3Sum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryALL.t2Sum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryALL.t1Sum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column> 
+
+                <p:column >
+                    <f:facet name="footer">
+                        <h:outputLabel value="#{timeSeriesListBean.timeSeriesSelected.timeSeriesDataSummaryALL.tSum}">
+                            <f:convertNumber/>
+                        </h:outputLabel>
+                    </f:facet>
+                </p:column>  
+            </p:row>
+        </p:columnGroup>  
+
+    </p:dataTable>
+
+
+</ui:composition>
+
+

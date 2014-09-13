@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite">
+    <composite:interface>
+        <composite:attribute name="showLoadingImage" type="java.lang.Boolean" required="false" default="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <p:ajaxStatus id="waitPanelXXX" onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
+            <p:dialog modal="true" showHeader="false"  width="88" widgetVar="statusDialog" draggable="false" closable="false" resizable="false"  style="border : 0; background: none; box-shadow: none;">
+                <p:graphicImage value="#{resource['images:load.gif']}" rendered="#{cc.attrs.showLoadingImage}" />
+            </p:dialog>
+        </p:ajaxStatus>
+    </composite:implementation>
+</ui:composition>
